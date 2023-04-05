@@ -20,7 +20,7 @@ const req_room = [];
 for (let i in course) {
   let course_half = Math.ceil(course[i].student / 2);
   const room_need = { course: course[i].course, room: [], student: [] };
-  for (let j = 0; j < rooms.length; j++) {
+  for (let j in rooms) {
     if (rooms[j].total !== 0 && course_half !== 0) {
       if (rooms[j].total > course_half) {
         room_need.room.push(rooms[j].no);
