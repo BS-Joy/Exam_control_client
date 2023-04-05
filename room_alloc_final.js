@@ -20,8 +20,8 @@ const req_room = [];
 for (let i in course) {
   let course_half = Math.ceil(course[i].student / 2);
   const room_need = { course: course[i].course, room: [], student: [] };
-  for (let j in rooms) {
-    if (rooms[j].total != 0 && course_half != 0) {
+  for (let j = 0; j < rooms.length; j++) {
+    if (rooms[j].total !== 0 && course_half !== 0) {
       if (rooms[j].total > course_half) {
         room_need.room.push(rooms[j].no);
         room_need.student.push(course_half);
@@ -29,11 +29,15 @@ for (let i in course) {
         course_half = course[i].student - course_half;
         course[i].student = course_half;
       } else {
-        course[i].student = course[i].student - rooms[j].total;
-        course_half = course[i].student;
-        room_need.room.push(rooms[j].no);
-        room_need.student.push(rooms[j].total);
-        rooms[j].total = 0;
+        if (rooms[j].total >= 7) {
+          course[i].student = course[i].student - rooms[j].total;
+          course_half = course[i].student;
+          room_need.room.push(rooms[j].no);
+          room_need.student.push(rooms[j].total);
+          rooms[j].total = 0;
+        }else {
+          course_half = course[i].student;
+        }
       }
     }
   }

@@ -33,7 +33,8 @@ function App() {
         },
         {
           path: '/room_alloc',
-          element: <RoomAlloc />
+          element: <RoomAlloc />,
+          loader: () => fetch('http://localhost:3001/rooms')
         }
       ]
     }
