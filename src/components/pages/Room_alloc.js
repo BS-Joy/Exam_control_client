@@ -1,13 +1,16 @@
 import { React, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 const RoomAlloc = () => {
     const [slot, setSlot] = useState([]);
-    const [students, setStudents] = useState([]);
+    // const [students, setStudents] = useState([]);
     const [query, setQuery] = useState({});
     const [courses, setCourses] = useState([]);
     const [total, setTotal] = useState();
+
+    const rooms_list = useLoaderData();
+    console.log(rooms_list);
 
     // handling exam slot
     const midSlot = ['Slot A: 9:00 - 10:30 am', 'Slot B: 11:30 - 1:00 pm', 'Slot C: 02:00 - 3:30 pm', 'Slot D: 06:00 - 8:30 pm'];
@@ -50,26 +53,35 @@ const RoomAlloc = () => {
             .then(data => {
                 const course = [];
                 data.map(c => course.push(c.course_code))
-                setCourses(...courses, course);
+                setCourses(course);
+
+                find_total(course);
             })
     }
+
 
     // submit handling
     const submitHandle = async e => {
         e.preventDefault();
 
-        const student = await Promise.all(courses.map(course => (
+        
+        console.log(courses)
+    }
+
+    // function for find the total student
+    const find_total = async (course) => {
+        const student = await Promise.all(course.map(course => (
             fetch(`http://localhost:3001/students/${course}`)
                 .then(res => res.json())
         )));
-        const x = []
-        student.map(stu => x.push(stu[0].reg_students))
+        console.log(student)
+        const reg_students_string = []
+        student.map(stu => reg_students_string.push(stu[0].reg_students))
+        console.log(reg_students_string)
 
-        const y = x.map(str => parseInt(str));
-        const total_student = y.reduce((a, b) => a+b, 0);
-        setTotal(total_student)
-        setStudents(...students, y);
-
+        const reg_students = reg_students_string.map(str => parseInt(str));
+        const total_student = reg_students.reduce((a, b) => a+b, 0);
+        setTotal(total_student);
     }
 
     return (
@@ -103,7 +115,7 @@ const RoomAlloc = () => {
                             {/* slot */}
                             <div>
                                 <label className='font-medium text-gray-900'>Slot:</label>
-                                <select onChange={getCourse} id="slot" name='slot' className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4">
+                                <select onChange={getCourse}  id="slot" name='slot' className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4">
                                     <option defaultValue='Choose Slot'>{slot.length > 0 ? 'Choose Slot' : 'Choose Exam type first'}</option>
                                     {
                                         slot.map((slot, index) => (

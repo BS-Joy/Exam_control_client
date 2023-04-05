@@ -148,7 +148,7 @@ const ExamReg = () => {
                                 {/* section */}
                                 <div>
                                     <label className='font-medium text-gray-900'>Section:</label>
-                                    <select id="countries" name='section' className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4">
+                                    <select required id="countries" name='section' className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4">
                                         <option>{sections.length > 0 ? 'Choose section' : 'Choose level & term First'}</option>
                                         {
                                             sections.map((sec, index) => (

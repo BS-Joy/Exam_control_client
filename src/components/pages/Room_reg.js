@@ -18,22 +18,22 @@ const RoomReg = () => {
     }
 
     const inputHandle = event => {
-        const filed = event.target.name;
+        const field = event.target.name;
         const value = event.target.value;
         const newRoom = {...room};
 
-        newRoom[filed] = value;
+        newRoom[field] = value;
         console.log(newRoom);
         setRoom(newRoom);
     }
 
     const roomHandle = event => {
-        const filed = event.target.name;
+        const field = event.target.name;
         const value = event.target.value;
         const preTotal = []
         const newRoom = {...room, total: 0};
 
-        newRoom[filed] = value;
+        newRoom[field] = value;
         const attr = Object.keys(newRoom);
         console.log(attr)
         for(let i = 3; i < attr.length; i++) {
