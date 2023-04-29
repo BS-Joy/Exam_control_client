@@ -4,17 +4,17 @@ import { FaArrowLeft } from 'react-icons/fa';
 
 const RoomReg = () => {
     const [room, setRoom] = useState({});
-    const [coloum, setColoum] = useState([]);
+    const [column, setColumn] = useState([]);
 
     const navigate = useNavigate();
 
-    const coloumHandle = (e) => {
+    const columnHandle = (e) => {
         let no = e.target.value;
-        const noColoums = []
+        const noColumns = []
         for (let i = 1; i <= no; i++) {
-            noColoums.push(i);
+            noColumns.push(i);
         }
-        setColoum(noColoums);
+        setColumn(noColumns);
     }
 
     const inputHandle = event => {
@@ -48,7 +48,7 @@ const RoomReg = () => {
     const submitHandle = e => {
         e.preventDefault();
 
-        fetch('http://localhost:3001/room', {
+        fetch('http://localhost:5000/room', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' 
@@ -79,18 +79,18 @@ const RoomReg = () => {
                                     <label className='font-medium text-gray-900'>Room No:</label>
                                     <input onBlur={inputHandle} id="countries" placeholder='Enter Room No' name='room_no' className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4" />
                                 </div>
-                                {/* No of coloum */}
+                                {/* No of column */}
                                 <div>
-                                    <label className='font-medium text-gray-900'>No of Coloum:</label>
-                                    <input required onBlur={inputHandle} onChange={coloumHandle} min='1' max='8' type="number" name="no__of_coloum" placeholder='Enter No of Coloum' className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm" />
+                                    <label className='font-medium text-gray-900'>No of Column:</label>
+                                    <input required onBlur={inputHandle} onChange={columnHandle} min='1' max='8' type="number" name="no__of_column" placeholder='Enter No of Column' className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm" />
                                 </div>
 
-                                {/* No of student per coloum */}
+                                {/* No of student per column */}
                                 {
-                                    coloum ? coloum.map((v, i) => (
+                                    column ? column.map((v, i) => (
                                         <div key={i}>
-                                            <label className='font-medium text-gray-900'>Total students on coloum {v}:</label>
-                                            <input onBlur={roomHandle} required type="number" name={`coloum_${v}`} placeholder='Enter total student number' className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm" />
+                                            <label className='font-medium text-gray-900'>Total students on column {v}:</label>
+                                            <input onBlur={roomHandle} required type="number" name={`column_${v}`} placeholder='Enter total student number' className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm" />
                                         </div>
                                     )) : ''
                                 }

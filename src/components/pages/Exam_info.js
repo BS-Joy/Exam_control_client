@@ -3,12 +3,15 @@ import { React, useEffect, useState } from "react";
 const ExamInfo = () => {
   const [routines, setRoutines] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001")
-      .then((res) => res.json())
-      .then((data) => {
-        setRoutines(data);
-      });
-  });
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:5000");
+      const data = await response.json();
+      setRoutines(data);
+    };
+  
+    fetchData();
+  }, []);
+  
 
   return (
     <div>

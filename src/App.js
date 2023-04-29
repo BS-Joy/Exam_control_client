@@ -1,5 +1,4 @@
-import './App.css';
-import Layout from './components/Layout';
+import Layout from './components/layout/Layout';
 import ExamInfo from './components/pages/Exam_info';
 import ExamReg from "./components/pages/Exam_reg"
 import Routine from './components/pages/Routine';
@@ -7,6 +6,7 @@ import RoomReg from './components/pages/Room_reg'
 import RoomAlloc from './components/pages/Room_alloc';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { TeacherContextProvider } from './context/InitialContext';
+import { RoomAllocSeatPlanProvider } from './context/RoomAlloc_SeatPlan_Context';
 
 function App() {
   const router = createBrowserRouter([
@@ -17,7 +17,7 @@ function App() {
         {
           path: '/',
           element: <ExamInfo />,
-          loader: () => fetch('http://localhost:3001')
+          loader: () => fetch('http://localhost:5000')
         },
         {
           path: '/input_schedule',
@@ -34,16 +34,18 @@ function App() {
         {
           path: '/room_alloc',
           element: <RoomAlloc />,
-          loader: () => fetch('http://localhost:3001/rooms')
+          loader: () => fetch('http://localhost:5000/rooms')
         }
       ]
     }
-  ])
+  ]);
 
   return (
     <>
     <TeacherContextProvider>
-      <RouterProvider router={router} />
+      <RoomAllocSeatPlanProvider>
+        <RouterProvider router={router} />
+      </RoomAllocSeatPlanProvider>
     </TeacherContextProvider>
     </>
 

@@ -13,7 +13,7 @@ const Routine = () => {
 
   // for courses
   useEffect(() => {
-    fetch("http://localhost:3001/courses")
+    fetch("http://localhost:5000/courses")
       .then((res) => res.json())
       .then((data) => setExamInfo(data))
       .catch((err) => console.log(err));
@@ -80,7 +80,7 @@ const Routine = () => {
       teacherInitial: teacherInitial,
     };
 
-    fetch("http://localhost:3001/routine", {
+    fetch("http://localhost:5000/routine", {
       method: "POST",
       headers: {
         "content-type": "application/json",

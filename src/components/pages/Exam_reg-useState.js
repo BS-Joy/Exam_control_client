@@ -1,48 +1,23 @@
-import { React, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { TeacherContext } from "../../context/InitialContext";
 import { useContext } from "react";
-import { useReducer } from "react";
-
-const initialState = {
-  users: [],
-  initial: "",
-  teachersName: "",
-  teachersInitial: "",
-  levelTermInfo: [],
-  sections: [],
-  courses: [],
-  students: "",
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'got_user':
-      return { ...state, users: action.result };
-    case 'Got_Initial':
-      return { ...state, initial: action.result };
-    case 'got_teachersname':
-      return { ...state , teachersName: action.result };
-    case 'Got_TeachersInitial':
-      return { ...state, teachersInitial: action.result };
-    case 'Got_LevelTermInfo':
-      return { ...state, levelTermInfo: action.result};
-    case 'sections_courses_students':
-      return {
-        ...state,
-        sections: action.result.sections,
-        courses: action.result.courses,
-        students: action.result.students
-      }
-    default:
-      return state;
-  }
-};
 
 const ExamReg = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [users, setUsers] = useState([]);
+  const [initial, setInitial] = useState("");
+  const [teachersName, setTeachersName] = useState("");
+  const [teachersInitial, setTeachersInitial] = useState("");
+
+  const [levelTermInfo, setLevelTermInfo] = useState([]);
+
+  // const [levelterm, setLevelTerm] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [students, setStudents] = useState("");
+
   const navigate = useNavigate();
 
   // fetching level & term information
@@ -50,22 +25,26 @@ const ExamReg = () => {
     const fetchData = async () => {
       const response = await fetch("http://localhost:5000/levelterm");
       const data = await response.json();
-      dispatch({type: 'Got_LevelTermInfo', result: data});
-    };
+      setLevelTermInfo(data)
+    }
+    
 
     fetchData();
   }, []);
 
-  // seperating only level & term from the levelTermInfo array
   let LevelTerm = [];
-  state.levelTermInfo.map((data) => LevelTerm.push(data.LVT));
+  console.log(levelTermInfo)
+
+  levelTermInfo.map((data) => LevelTerm.push(data.LVT));
 
   // lvt handling
   const lvtHandle = (e) => {
     const lvt = e.target.value;
 
-    const a = state.levelTermInfo.find((x) => x.LVT === lvt);
-    dispatch({type: 'sections_courses_students', result: {sections: a.section, courses: a.course, students: a.Total_students}})
+    const a = levelTermInfo.find((x) => x.LVT === lvt);
+    setSections(a.section);
+    setCourses(a.course);
+    setStudents(a.Total_students);
   };
 
   // fetch teacher information
@@ -73,20 +52,20 @@ const ExamReg = () => {
   const teachers = useContext(TeacherContext);
   useEffect(() => {
     if (teachers[0]) {
-      dispatch({ type: "got_teachersname", result: teachers[0].Name });
-      dispatch({ type: "Got_TeachersInitial", result: teachers[0].Initial });
+      setTeachersName(teachers[0].Name);
+      setTeachersInitial(teachers[0].Initial);
     }
-  }, [teachers]);
+  }, [teachers, teachersName, teachersInitial]);
 
   // handeling teacher names and initial
   const nameHandle = (e) => {
     const name = e.target.value;
-    const nameIndex = state.teachersName.indexOf(name);
-    dispatch({ type: "Got_Initial", result: state.teachersInitial[nameIndex] });
+    const nameIndex = teachersName.indexOf(name);
+    setInitial(teachersInitial[nameIndex]);
   };
 
   // handleing the form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const name = e.target.name.value;
@@ -107,21 +86,19 @@ const ExamReg = () => {
       total: t_students,
     };
 
-    try{
-      const response = await fetch("http://localhost:5000", {
+    fetch("http://localhost:5000", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(user),
-    });
-
-    const data = await response.json()
-    const Nuser = [...state.users, data];
-    dispatch({ type: "got_user", result: Nuser });
-    } catch (err) {
-      console.error(err)
-    }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const Nuser = [...users, data];
+        setUsers(Nuser);
+      })
+      .catch((err) => console.log(err));
 
     navigate("/");
   };
@@ -151,8 +128,8 @@ const ExamReg = () => {
                     <option defaultValue={"Choose Your Name"}>
                       Choose Your Name
                     </option>
-                    {state.teachersName
-                      ? state.teachersName.map((name, index) => (
+                    {teachersName
+                      ? teachersName.map((name, index) => (
                           <option key={index} value={name}>
                             {name}
                           </option>
@@ -168,7 +145,7 @@ const ExamReg = () => {
                   <input
                     type="text"
                     name="initial"
-                    value={state.initial ? state.initial : "Select Your Name First"}
+                    value={initial ? initial : "Select Your Name First"}
                     disabled
                     className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm"
                   />
@@ -206,11 +183,11 @@ const ExamReg = () => {
                     className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4"
                   >
                     <option>
-                      {state.sections.length > 0
+                      {sections.length > 0
                         ? "Choose section"
                         : "Choose level & term First"}
                     </option>
-                    {state.sections.map((sec, index) => (
+                    {sections.map((sec, index) => (
                       <option key={index} value={sec}>
                         {sec}
                       </option>
@@ -230,15 +207,15 @@ const ExamReg = () => {
                     id="course"
                     name="course"
                     className={`${
-                      state.courses ? "" : "disabled"
+                      courses ? "" : "disabled"
                     }border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5`}
                   >
                     <option>
-                      {state.courses.length > 0
+                      {courses.length > 0
                         ? "Choose course"
                         : "Choose level & term First"}
                     </option>
-                    {state.courses.map((course, index) => (
+                    {courses.map((course, index) => (
                       <option key={index} value={course}>
                         {course}
                       </option>
@@ -261,7 +238,7 @@ const ExamReg = () => {
                 </div>
 
                 {/* total student */}
-                <div className={`${state.students ? "block" : "hidden"}`}>
+                <div className={`${students ? "block" : "hidden"}`}>
                   <label className="font-medium text-gray-900">
                     Total Student:
                   </label>
@@ -271,10 +248,24 @@ const ExamReg = () => {
                     className={`w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm`}
                     type="text"
                     id="routine"
-                    value={state.students ? state.students : ""}
+                    value={students ? students : ""}
                   />
                 </div>
               </div>
+              {/* <div>
+                                <label for="message">Add CSV:</label>
+                                <input
+                                    className="w-full outline-dotted outline-1 rounded-lg focus:outline-slate-600 p-3 text-sm 
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-violet-50 file:text-violet-700
+                                    hover:file:bg-violet-100"
+                                    placeholder="Message"
+                                    type="file"
+                                    id="message"
+                                ></input>
+                            </div> */}
 
               <div className="mt-4">
                 <button
