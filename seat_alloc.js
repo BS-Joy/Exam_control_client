@@ -119,4 +119,4 @@ const room = {
   const plan = seat_distribution(room, columns, keys);
   const final_seat_plan = seat_plan(columns, keys, plan);
   
-  console.log(final_seat_plan);
+  console.log(plan);

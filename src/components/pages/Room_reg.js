@@ -82,7 +82,7 @@ const RoomReg = () => {
                                 {/* No of column */}
                                 <div>
                                     <label className='font-medium text-gray-900'>No of Column:</label>
-                                    <input required onBlur={inputHandle} onChange={columnHandle} min='1' max='8' type="number" name="no__of_column" placeholder='Enter No of Column' className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm" />
+                                    <input required onBlur={inputHandle} onChange={columnHandle} min='1' max='8' type="number" name="no_of_column" placeholder='Enter No of Column' className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm" />
                                 </div>
 
                                 {/* No of student per column */}

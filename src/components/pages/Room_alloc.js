@@ -1,9 +1,11 @@
-import { React, useReducer } from "react";
+import { React, useContext, useReducer } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useLoaderData } from "react-router-dom";
 import RoomAllocationTable from "../Room_Allocation_Table";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "../Modal";
+import { AllocContext } from "../../context/SeatAllocContext";
 
 const initialState = {
   slots: [],
@@ -15,6 +17,7 @@ const initialState = {
   total: 0,
   roomAllocation: [],
   seatPlan: [],
+  pre_plan: [],
 };
 
 const reducer = (state, action) => {
@@ -64,6 +67,11 @@ const reducer = (state, action) => {
         ...state,
         seatPlan: action.result,
       };
+    case "prePlan":
+      return {
+        ...state,
+        pre_plan: action.result,
+      };
     default:
       return state;
   }
@@ -73,6 +81,7 @@ const RoomAlloc = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const rooms_list = useLoaderData();
+  const planFunc = useContext(AllocContext);
 
   // handling exam slot
   const midSlot = [
@@ -127,6 +136,7 @@ const RoomAlloc = () => {
       .then((data) => {
         const course = [];
         data.map((c) => course.push(c.course_code));
+        console.log(course)
 
         find_total(course);
       });
@@ -155,7 +165,7 @@ const RoomAlloc = () => {
 
   // function for find the required room aginst total students
   const findReqRoom = (total_student, rooms) => {
-    rooms.sort((a, b) => b.total - a.total);
+    rooms.sort((a, b) => a.total - b.total);
     const req_rooms = [];
     let total = 0;
     for (let i in rooms) {
@@ -168,20 +178,6 @@ const RoomAlloc = () => {
     }
     dispatch({ type: "reqRooms", result: req_rooms });
   };
-
-  // toast function
-  // const toastFunction = () => {
-  //   toast.info("No exam found!", {
-  //     position: "bottom-center",
-  //     autoClose: 1000,
-  //     hideProgressBar: true,
-  //     closeOnClick: true,
-  //     pauseOnHover: false,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "light",
-  //   });
-  // };
 
   // submit handling
   const submitHandle = async (e) => {
@@ -219,7 +215,9 @@ const RoomAlloc = () => {
                     pre_seat_plan[x].room.room_no === state.reqRooms[j].room_no
                   ) {
                     pre_seat_plan[x].course.push(state.courses[i].course);
+                    // console.log(state.courses[i].course);
                     pre_seat_plan[x].student.push(remaining_student);
+                    // console.log(remaining_student);
                   }
                 }
                 room_need.room.push(state.reqRooms[j].room_no);
@@ -237,11 +235,12 @@ const RoomAlloc = () => {
                       state.reqRooms[j].room_no
                     ) {
                       pre_seat_plan[x].course.push(state.courses[i].course);
+                      // console.log(state.courses[i].course);
                       pre_seat_plan[x].student.push(state.reqRooms[j].total);
+                      // console.log(state.reqRooms[j].total);
                     }
                   }
-                  state.courses[i].reg_students =
-                    state.courses[i].reg_students - state.reqRooms[j].total;
+                  state.courses[i].reg_students -= state.reqRooms[j].total;
                   remaining_student = state.courses[i].reg_students;
                   room_need.room.push(state.reqRooms[j].room_no);
                   room_need.student.push(state.reqRooms[j].total);
@@ -254,12 +253,16 @@ const RoomAlloc = () => {
           }
           temp_room_alloc.push(room_need);
         }
-
+        dispatch({ type: "prePlan", result: pre_seat_plan });
+        // console.log(temp_room_alloc);
         // console.log(pre_seat_plan);
-        dispatch({ type: "seatPlan", result: pre_seat_plan });
-        console.log(temp_room_alloc);
-        console.log(typeof temp_room_alloc);
         dispatch({ type: "roomAllocation", result: temp_room_alloc });
+
+        const a = planFunc(pre_seat_plan);
+
+        dispatch({ type: "seatPlan", result: a });
+
+        e.target.reset();
       }
     } else {
       toast.info("No exam found!", {
@@ -321,7 +324,7 @@ const RoomAlloc = () => {
                 <select
                   required
                   onBlur={queryHandle}
-                  onMouseLeave={slotHandle}
+                  onChange={slotHandle}
                   id="exam_type"
                   name="exam_type"
                   className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4"
@@ -397,11 +400,21 @@ const RoomAlloc = () => {
             query={state.query}
             semester={state.semester}
             examSlot={state.examSlot}
-            pre_seat_plan={state.seatPlan}
+            pre_plan={state.seatPlan}
           />
         ) : (
           ""
         )}
+      </div>
+      <div>
+        <Modal
+          seat_plan={state.seatPlan}
+          pre_plan={state.pre_plan}
+          total={state.total}
+          query={state.query}
+          semester={state.semester}
+          examSlot={state.examSlot}
+        />
       </div>
     </>
   );

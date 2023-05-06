@@ -7,10 +7,10 @@ const RoomAllocationTable = ({
   query,
   semester,
   examSlot,
-  pre_seat_plan,
+  pre_plan
 }) => {
-  console.log(pre_seat_plan );
-  const {exportRoomAllocation} = useContext(RoomAllocSeatPlan);
+  const { exportRoomAllocation } = useContext(RoomAllocSeatPlan);
+
   return (
     <>
       <div className="overflow-x-auto mt-8 mb-8">
@@ -94,7 +94,11 @@ const RoomAllocationTable = ({
         >
           Download
         </button>
+        <label htmlFor="my-modal-5" className="btn ml-5">
+          View Seat Plan
+        </label>
       </div>
+      {/* modal */}
     </>
   );
 };
