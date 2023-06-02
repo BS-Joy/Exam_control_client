@@ -4,7 +4,7 @@ import autoTable from "jspdf-autotable";
 
 const Modal = ({ seat_plan, pre_plan, total, query, semester, examSlot }) => {
 
-  console.log(seat_plan)
+  // console.log(seat_plan)
   const seeSeat = () => {
     const doc = new jsPDF();
     const reverseDate = query.date.split("-").reverse().join("-");

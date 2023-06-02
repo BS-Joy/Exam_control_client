@@ -29,12 +29,12 @@ const reducer = (state, action) => {
       return { ...state, teachersInitial: action.result };
     case 'Got_LevelTermInfo':
       return { ...state, levelTermInfo: action.result};
-    case 'sections_courses_students':
+    case 'courses':
       return {
         ...state,
-        sections: action.result.sections,
-        courses: action.result.courses,
-        students: action.result.students
+        // sections: action.result.sections,
+        courses: action.result
+        // students: action.result.students
       }
     default:
       return state;
@@ -46,44 +46,59 @@ const ExamReg = () => {
   const navigate = useNavigate();
 
   // fetching level & term information
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:5000/levelterm");
-      const data = await response.json();
-      dispatch({type: 'Got_LevelTermInfo', result: data});
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await fetch("http://localhost:5000/levelterm");
+  //     const data = await response.json();
+  //     console.log(data)
+  //     dispatch({type: 'Got_LevelTermInfo', result: data});
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // seperating only level & term from the levelTermInfo array
-  let LevelTerm = [];
-  state.levelTermInfo.map((data) => LevelTerm.push(data.LVT));
+  const levelTerms = ['L1 T1', 'L1 T2', 'L2 T1', 'L2 T2', 'L3 T1', 'L3 T2', 'L4 T1', 'L4 T2', ]
+  // state.levelTermInfo.map((data) => LevelTerm.push(data.LVT));
 
   // lvt handling
-  const lvtHandle = (e) => {
+  const getCourses = async (e) => {
     const lvt = e.target.value;
+    const course_codes = []
+    try{
+      await fetch(`http://localhost:5000/get_courses/${lvt}`)
+      .then(res => res.json())
+      .then(data => (
+        data.map(course => (
+          course_codes.push(course.course_code)
+        ))
+      ))
+    } catch(err) {
+      console.log(err)
+    }
 
-    const a = state.levelTermInfo.find((x) => x.LVT === lvt);
-    dispatch({type: 'sections_courses_students', result: {sections: a.section, courses: a.course, students: a.Total_students}})
+    // console.log(course_codes)
+    // dispatch({type: 'sections_courses_students', result: {sections: a.section, courses: a.course, students: a.Total_students}})
+    dispatch({type: 'courses', result: course_codes})
   };
 
   // fetch teacher information
 
-  const teachers = useContext(TeacherContext);
-  useEffect(() => {
-    if (teachers[0]) {
-      dispatch({ type: "got_teachersname", result: teachers[0].Name });
-      dispatch({ type: "Got_TeachersInitial", result: teachers[0].Initial });
-    }
-  }, [teachers]);
+  // const teachers = useContext(TeacherContext);
+  // useEffect(() => {
+  //   if (teachers[0]) {
+  //     dispatch({ type: "got_teachersname", result: teachers[0].Name });
+  //     dispatch({ type: "Got_TeachersInitial", result: teachers[0].Initial });
+  //   }
+  // }, [teachers]);
 
   // handeling teacher names and initial
-  const nameHandle = (e) => {
-    const name = e.target.value;
-    const nameIndex = state.teachersName.indexOf(name);
-    dispatch({ type: "Got_Initial", result: state.teachersInitial[nameIndex] });
-  };
+  // const nameHandle = (e) => {
+  //   const name = e.target.value;
+  //   const nameIndex = state.teachersName.indexOf(name);
+  //   dispatch({ type: "Got_Initial", result: state.teachersInitial[nameIndex] });
+  // };
+  
 
   // handleing the form submission
   const handleSubmit = async (e) => {
@@ -142,7 +157,13 @@ const ExamReg = () => {
                 {/* Name */}
                 <div>
                   <label className="font-medium text-gray-900">Name:</label>
-                  <select
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter Your Name"
+                    className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm"
+                  />
+                  {/* <select
                     onChange={nameHandle}
                     id="countries"
                     name="name"
@@ -158,7 +179,7 @@ const ExamReg = () => {
                           </option>
                         ))
                       : "Choose Name first"}
-                  </select>
+                  </select> */}
                 </div>
                 {/* teacher initial */}
                 <div>
@@ -168,8 +189,7 @@ const ExamReg = () => {
                   <input
                     type="text"
                     name="initial"
-                    value={state.initial ? state.initial : "Select Your Name First"}
-                    disabled
+                    placeholder="Enter Your Name Intitial"
                     className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm"
                   />
                 </div>
@@ -180,7 +200,7 @@ const ExamReg = () => {
                     Level & Term:
                   </label>
                   <select
-                    onChange={lvtHandle}
+                    onChange={getCourses}
                     id="countries"
                     name="lvt"
                     className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:outline-slate-600 block w-full p-2.5 pr-4"
@@ -188,7 +208,7 @@ const ExamReg = () => {
                     <option defaultValue={"Choose level & term"}>
                       Choose level & term
                     </option>
-                    {LevelTerm.map((lvt, index) => (
+                    {levelTerms.map((lvt, index) => (
                       <option key={index} value={lvt}>
                         {lvt}
                       </option>
@@ -199,7 +219,13 @@ const ExamReg = () => {
                 {/* section */}
                 <div>
                   <label className="font-medium text-gray-900">Section:</label>
-                  <select
+                  <input
+                    type="text"
+                    name="section"
+                    placeholder="Enter Section"
+                    className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm"
+                  />
+                  {/* <select
                     required
                     id="countries"
                     name="section"
@@ -215,7 +241,7 @@ const ExamReg = () => {
                         {sec}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                 </div>
 
                 {/* course */}
@@ -249,29 +275,29 @@ const ExamReg = () => {
                 {/* registered student */}
                 <div>
                   <label className="font-medium text-gray-900">
-                    Registerd Student:
+                    Registerd Students:
                   </label>
                   <input
                     required
                     className="w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm"
                     type="text"
-                    id="routine"
+                    id="reg_students"
                     name="reg_students"
+                    placeholder="Enter Registered Students"
                   />
                 </div>
 
                 {/* total student */}
-                <div className={`${state.students ? "block" : "hidden"}`}>
+                <div>
                   <label className="font-medium text-gray-900">
                     Total Student:
                   </label>
                   <input
-                    disabled
                     name="t_students"
                     className={`w-full rounded-lg outline outline-1 outline-slate-300 focus:outline-slate-600 p-3 text-sm`}
                     type="text"
-                    id="routine"
-                    value={state.students ? state.students : ""}
+                    id="total_students"
+                    placeholder="Enter Total Students"
                   />
                 </div>
               </div>

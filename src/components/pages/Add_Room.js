@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
-const RoomReg = () => {
+const AddRoom = () => {
     const [room, setRoom] = useState({});
     const [column, setColumn] = useState([]);
 
@@ -72,7 +72,7 @@ const RoomReg = () => {
                             <FaArrowLeft />
                         </Link>
                         <form className="space-y-4" onSubmit={submitHandle}>
-                            <legend className='text-center text-3xl font-bold underline'>Room Registration</legend>
+                            <legend className='text-center text-3xl font-bold underline'>Add Room</legend>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {/* Room no */}
                                 <div>
@@ -115,4 +115,4 @@ const RoomReg = () => {
     );
 }
 
-export default RoomReg;
+export default AddRoom;

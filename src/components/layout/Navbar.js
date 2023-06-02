@@ -8,13 +8,14 @@ const Navbar = () => {
             <div className="navbar bg-slate-700 text-white mb-8 max-w-full">
                 <div className="navbar mx-auto flex-col md:flex-row">
                     <div className="flex-1">
-                        <Link to='/' className="btn btn-ghost normal-case text-xl">Exam Controll</Link>
+                        <Link to='/' className="btn btn-ghost normal-case text-xl">Exam Controll System</Link>
                     </div>
                     <div className="flex-none">
                         <ul className="menu menu-horizontal p-0 flex-col md:flex-row">
+                            <li className=''><Link to='/add_course'>Add Course</Link></li>
+                            <li className=''><Link to='/add_room'>Add Room</Link></li>
                             <li className=''><Link to='/input_schedule'>Exam Registration</Link></li>
                             <li className=''><Link to='/routine'>Add Routine</Link></li>
-                            <li className=''><Link to='/room'>Room Reg</Link></li>
                             <li className=''><Link to='/room_alloc'>Room Alloc</Link></li>
                         </ul>
                     </div>
