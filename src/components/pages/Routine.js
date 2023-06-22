@@ -15,7 +15,10 @@ const Routine = () => {
   useEffect(() => {
     fetch("http://localhost:5000/courses")
       .then((res) => res.json())
-      .then((data) => setExamInfo(data))
+      .then((data) => {
+        setExamInfo(data)
+        // console.log(data)
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -23,6 +26,7 @@ const Routine = () => {
   for (let i = 0; i < examInfo.length; i++) {
     courses.push(examInfo[i].course);
   }
+
   // setting teacher initail
   const initialHandle = (e) => {
     e.preventDefault();
@@ -91,7 +95,7 @@ const Routine = () => {
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
 
-    navigate("/");
+    e.target.reset();
   };
 
   return (

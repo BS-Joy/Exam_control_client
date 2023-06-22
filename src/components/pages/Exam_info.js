@@ -8,17 +8,15 @@ const ExamInfo = () => {
       const data = await response.json();
       setRoutines(data);
     };
-  
+
     fetchData();
   }, []);
-  
 
   return (
     <div>
       <div className="container mx-auto max-w-screen-xl">
         <h1 className="text-center font-bold text-3xl pb-8">Exam Schedule</h1>
         <div className="flex justify-between">
-
           <div className="total">
             <h1 className="text-2xl">Total: {routines.length}</h1>
           </div>

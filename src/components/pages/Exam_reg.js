@@ -19,23 +19,23 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'got_user':
+    case "got_user":
       return { ...state, users: action.result };
-    case 'Got_Initial':
+    case "Got_Initial":
       return { ...state, initial: action.result };
-    case 'got_teachersname':
-      return { ...state , teachersName: action.result };
-    case 'Got_TeachersInitial':
+    case "got_teachersname":
+      return { ...state, teachersName: action.result };
+    case "Got_TeachersInitial":
       return { ...state, teachersInitial: action.result };
-    case 'Got_LevelTermInfo':
-      return { ...state, levelTermInfo: action.result};
-    case 'courses':
+    case "Got_LevelTermInfo":
+      return { ...state, levelTermInfo: action.result };
+    case "courses":
       return {
         ...state,
         // sections: action.result.sections,
-        courses: action.result
+        courses: action.result,
         // students: action.result.students
-      }
+      };
     default:
       return state;
   }
@@ -58,28 +58,35 @@ const ExamReg = () => {
   // }, []);
 
   // seperating only level & term from the levelTermInfo array
-  const levelTerms = ['L1 T1', 'L1 T2', 'L2 T1', 'L2 T2', 'L3 T1', 'L3 T2', 'L4 T1', 'L4 T2', ]
+  const levelTerms = [
+    "L1 T1",
+    "L1 T2",
+    "L2 T1",
+    "L2 T2",
+    "L3 T1",
+    "L3 T2",
+    "L4 T1",
+    "L4 T2",
+  ];
   // state.levelTermInfo.map((data) => LevelTerm.push(data.LVT));
 
   // lvt handling
   const getCourses = async (e) => {
     const lvt = e.target.value;
-    const course_codes = []
-    try{
+    const course_codes = [];
+    try {
       await fetch(`http://localhost:5000/get_courses/${lvt}`)
-      .then(res => res.json())
-      .then(data => (
-        data.map(course => (
-          course_codes.push(course.course_code)
-        ))
-      ))
-    } catch(err) {
-      console.log(err)
+        .then((res) => res.json())
+        .then((data) =>
+          data.map((course) => course_codes.push(course.course_code))
+        );
+    } catch (err) {
+      console.log(err);
     }
 
     // console.log(course_codes)
     // dispatch({type: 'sections_courses_students', result: {sections: a.section, courses: a.course, students: a.Total_students}})
-    dispatch({type: 'courses', result: course_codes})
+    dispatch({ type: "courses", result: course_codes });
   };
 
   // fetch teacher information
@@ -98,10 +105,9 @@ const ExamReg = () => {
   //   const nameIndex = state.teachersName.indexOf(name);
   //   dispatch({ type: "Got_Initial", result: state.teachersInitial[nameIndex] });
   // };
-  
 
   // handleing the form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const name = e.target.name.value;
@@ -112,7 +118,7 @@ const ExamReg = () => {
     const reg_students = e.target.reg_students.value;
     const t_students = e.target.t_students.value;
 
-    const user = {
+    const exam = {
       name: name,
       initial: initial,
       lvt: lvt,
@@ -122,23 +128,22 @@ const ExamReg = () => {
       total: t_students,
     };
 
-    try{
-      const response = await fetch("http://localhost:5000", {
+    // console.log(exam);
+
+    fetch("http://localhost:5000", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(user),
-    });
+      body: JSON.stringify(exam),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    // const Nuser = [...state.users, data];
+    // dispatch({ type: "got_user", result: Nuser });
 
-    const data = await response.json()
-    const Nuser = [...state.users, data];
-    dispatch({ type: "got_user", result: Nuser });
-    } catch (err) {
-      console.error(err)
-    }
-
-    navigate("/");
+    e.target.reset();
+    // navigate("/home");
   };
 
   return (

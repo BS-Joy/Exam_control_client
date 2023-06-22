@@ -12,56 +12,67 @@ import { AllocContextProvider } from "./context/SeatAllocContext";
 import RoomAllocationTable from "./components/pages/Room_Allocation_Table";
 import Login from "./components/pages/auth/LogIn"
 import SignUp from "./components/pages/auth/SignUp";
-import GetUser from "./components/GetUser";
+import AdminSignUp from "./components/pages/auth/Admin_SignUp";
+import PrivateRoute from "./components/routes/PrivateRoute";
+import PublicRoute from "./components/routes/PublicRoute";
+import AdminRoute from "./components/routes/AdminRoute";
+import TeachersRoute from "./components/routes/TeachersRoute";
+import Error from "./components/Error";
+import Profile from "./components/pages/Profile";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
+      errorElement: <Error />,
       children: [
         {
-          path: "/",
-          element: <ExamInfo />,
+          path: "/home",
+          element: <PrivateRoute><ExamInfo /></PrivateRoute>,
           loader: () => fetch("http://localhost:5000"),
         },
         {
-          path: "/login",
-          element: <Login />,
+          path: "/",
+          element: <PublicRoute><Login /></PublicRoute>,
         },
         {
           path: "/signup",
-          element: <SignUp />,
+          element: <PublicRoute><SignUp /></PublicRoute>,
+        },
+        {
+          path: "/admin-signup",
+          element: <PublicRoute><AdminSignUp /></PublicRoute>,
         },
         {
           path: "/input_schedule",
-          element: <ExamReg />,
+          element: <TeachersRoute><ExamReg /></TeachersRoute>,
         },
         {
           path: "/routine",
-          element: <Routine />,
+          element: <AdminRoute><Routine /></AdminRoute>,
         },
         {
           path: "/add_room",
-          element: <AddRoom />,
+          element: <AdminRoute><AddRoom /></AdminRoute>,
         },
         {
           path: "/room_alloc",
-          element: <RoomAlloc />,
+          element: <AdminRoute><RoomAlloc /></AdminRoute>,
           loader: () => fetch("http://localhost:5000/rooms"),
         },
         {
           path: "/add_course",
-          element: <AddCourse />
+          element: <AdminRoute><AddCourse /></AdminRoute>
         },
         {
           path: "/allocated_rooms",
           element: <RoomAllocationTable />
         },
         {
-          path: "/getUser",
-          element: <GetUser />,
-        },
+          path: "/profile",
+          element: <PrivateRoute><Profile /></PrivateRoute>
+        }
       ],
     },
   ]);

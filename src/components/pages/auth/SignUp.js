@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { useContext } from "react";
 import { getAuth, updateProfile } from "firebase/auth";
 
 const SignUp = () => {
-  const { signUp } = useContext(AuthContext);
-  const auth = getAuth()
+  const [passValidation, setPassValidation] = useState(false);
+  const { signUp, logOut } = useContext(AuthContext);
+  const [showPass, setShowPass] = useState(false);
+  const auth = getAuth();
+  const redirect = useNavigate();
+
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{5,}$/;
+
 
   const submitHandle = (event) => {
     event.preventDefault();
@@ -15,20 +21,41 @@ const SignUp = () => {
     const email = event.target.email.value;
     const pass = event.target.password.value;
 
-    const teacher_name = name.concat('-teacher')
+    const teacher_name = name.concat('-teacher');
 
     signUp(email, pass)
     .then((result) => {
       updateProfile(auth.currentUser, {
         displayName: teacher_name
       })
-      console.log(result.user);
+      console.log(result)
+      logOut().then(redirect('/'))
     })
 
     event.target.reset()
   }
+
+  const showPassword = (event) => {
+    const show = event.target.checked;
+    if(show) {
+      setShowPass(true)
+    } else {
+      setShowPass(false)
+    }
+  }
+
+  const checkPass = (event) => {
+    const pass = event.target.value;
+    if(passwordRegex.test(pass)){
+      setPassValidation(true)
+    } else {
+      setPassValidation(false)
+    }
+  }
+
+
   return (
-    <div className="container mx-auto max-w-screen-xl px-3">
+    <div className="mx-auto max-w-screen-xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto py-6 px-8 mt-20 bg-white rounded shadow-xl">
         <h1 className="text-center text-3xl font-bold mb-3">Sign Up</h1>
         <form action="#" onSubmit={submitHandle}>
@@ -64,12 +91,23 @@ const SignUp = () => {
               Password:
             </label>
             <input
-              type="password"
+              onChange={checkPass}
+              type={`${showPass ? 'text': 'password'}`}
               name="password"
               id="password"
               placeholder="Password"
               className="w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600"
             />
+            <input type="checkbox" onChange={showPassword} name="show_pass" id="show-pass" />
+            <label htmlFor="show_pass">Show Password</label>
+            <div className={`text-sm ${passValidation ? "text-black" : "text-red-600"} `}>
+              <p className="font-bold">* Password must contain:</p>
+              <ul className="list-disc list-inside">
+                <li>Minimum length of 5 characters</li>
+                <li>At least one capital letter</li>
+                <li>At least one special character</li>
+              </ul>
+            </div>
             <Link
               to="#"
               className="text-sm font-thin text-gray-800 hover:underline mt-2 inline-block hover:text-indigo-600"
@@ -78,14 +116,14 @@ const SignUp = () => {
             </Link>
           </div>
 
-          <button className="cursor-pointer py-2 px-4 block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold w-full text-center rounded">
+          <button disabled={passValidation ? false : true} className={`disabled:bg-red-500 cursor-pointer py-2 px-4 block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold w-full text-center rounded`}>
             Sign Up
           </button>
         </form>
       </div>
-      <p className="text-center mt-1">
+      <p className="text-center mt-1 mb-16">
         Already Have an Account?&nbsp;
-        <Link to="/login" className="hover:text-blue-600">
+        <Link to="/" className="hover:text-blue-600">
           Log In
         </Link>
       </p>

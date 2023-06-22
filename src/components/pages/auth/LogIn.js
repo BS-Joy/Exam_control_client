@@ -1,24 +1,60 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
+import { Slide, ToastContainer, toast } from "react-toastify";
+
 
 const Login = () => {
-  const {hudai} = useContext(AuthContext);
-  const getUserInfo = (event) => {
-    const label = event.target.name;
-    const value = event.target.value;
+  const {logIn} = useContext(AuthContext);
+  const redirect = useNavigate()
+  const submitHandle = (event) => {
+    event.preventDefault()
+    
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    logIn(email, password)
+    .then(res => {
+      // console.log(res.usr);
+      redirect('/home')
+    }).catch(err => {
+      toast.error(`${err.code.replace('auth/', '')}`, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    })
   }
   return (
     <div className="container mx-auto max-w-screen-xl px-3">
       <div className="max-w-md mx-auto py-6 px-8 mt-20 bg-white rounded shadow-xl">
+      <div>
+            <ToastContainer
+              position="bottom-center"
+              autoClose={1000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable
+              pauseOnHover={false}
+              theme="colored"
+              transition={Slide}
+            />
+          </div>
         <h1 className="text-center text-3xl font-bold mb-3">Log in</h1>
-        <form action="#">
+        <form onSubmit={submitHandle}>
           <div className="mb-6">
             <label htmlFor="email" className="block text-gray-800 font-bold">
               Email:
             </label>
             <input
-              onBlur={getUserInfo}
               type="email"
               name="email"
               id="email"
