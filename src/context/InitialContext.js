@@ -6,7 +6,7 @@ function TeacherContextProvider({children}){
     const [teachers, setTeachers] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/teacher')
+        fetch('http://localhost:5000/teacher')
         .then(res => res.json())
         .then(data => setTeachers(data))
         .catch(err => console.log(err));

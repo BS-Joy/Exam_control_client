@@ -1,52 +1,92 @@
-import './App.css';
-import Layout from './components/Layout';
-import ExamInfo from './components/pages/Exam_info';
-import ExamReg from "./components/pages/Exam_reg"
-import Routine from './components/pages/Routine';
-import RoomReg from './components/pages/Room_reg'
-import RoomAlloc from './components/pages/Room_alloc';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { TeacherContextProvider } from './context/InitialContext';
+import Layout from "./components/layout/Layout";
+import ExamInfo from "./components/pages/Exam_info";
+import ExamReg from "./components/pages/Exam_reg";
+import Routine from "./components/pages/Routine";
+import AddRoom from "./components/pages/Add_Room";
+import RoomAlloc from "./components/pages/Room_alloc";
+import AddCourse from "./components/pages/AddCourse";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthContextProvider } from "./context/AuthContext";
+import { RoomAllocSeatPlanProvider } from "./context/RoomAlloc_SeatPlan_Context";
+import { AllocContextProvider } from "./context/SeatAllocContext";
+import RoomAllocationTable from "./components/pages/Room_Allocation_Table";
+import Login from "./components/pages/auth/LogIn"
+import SignUp from "./components/pages/auth/SignUp";
+import AdminSignUp from "./components/pages/auth/Admin_SignUp";
+import PrivateRoute from "./components/routes/PrivateRoute";
+import PublicRoute from "./components/routes/PublicRoute";
+import AdminRoute from "./components/routes/AdminRoute";
+import TeachersRoute from "./components/routes/TeachersRoute";
+import Error from "./components/Error";
+import Profile from "./components/pages/Profile";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <Layout />,
+      errorElement: <Error />,
       children: [
         {
-          path: '/',
-          element: <ExamInfo />,
-          loader: () => fetch('http://localhost:3001')
+          path: "/home",
+          element: <PrivateRoute><ExamInfo /></PrivateRoute>,
+          loader: () => fetch("http://localhost:5000"),
         },
         {
-          path: '/input_schedule',
-          element: <ExamReg />
+          path: "/",
+          element: <PublicRoute><Login /></PublicRoute>,
         },
         {
-          path: '/routine',
-          element: <Routine />,
+          path: "/signup",
+          element: <PublicRoute><SignUp /></PublicRoute>,
         },
         {
-          path: '/room',
-          element: <RoomReg />
+          path: "/admin-signup",
+          element: <PublicRoute><AdminSignUp /></PublicRoute>,
         },
         {
-          path: '/room_alloc',
-          element: <RoomAlloc />,
-          loader: () => fetch('http://localhost:3001/rooms')
+          path: "/input_schedule",
+          element: <TeachersRoute><ExamReg /></TeachersRoute>,
+        },
+        {
+          path: "/routine",
+          element: <AdminRoute><Routine /></AdminRoute>,
+        },
+        {
+          path: "/add_room",
+          element: <AdminRoute><AddRoom /></AdminRoute>,
+        },
+        {
+          path: "/room_alloc",
+          element: <AdminRoute><RoomAlloc /></AdminRoute>,
+          loader: () => fetch("http://localhost:5000/rooms"),
+        },
+        {
+          path: "/add_course",
+          element: <AdminRoute><AddCourse /></AdminRoute>
+        },
+        {
+          path: "/allocated_rooms",
+          element: <RoomAllocationTable />
+        },
+        {
+          path: "/profile",
+          element: <PrivateRoute><Profile /></PrivateRoute>
         }
-      ]
-    }
-  ])
+      ],
+    },
+  ]);
 
   return (
     <>
-    <TeacherContextProvider>
-      <RouterProvider router={router} />
-    </TeacherContextProvider>
+      <AuthContextProvider>
+        <RoomAllocSeatPlanProvider>
+          <AllocContextProvider>
+            <RouterProvider router={router} />
+          </AllocContextProvider>
+        </RoomAllocSeatPlanProvider>
+      </AuthContextProvider>
     </>
-
   );
 }
 

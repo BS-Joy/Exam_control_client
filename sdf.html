@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table, tr, th, td {
+      border: 1px solid red;
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Room</th>
+        <th>students</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="3">cse-210</td>
+        <td>322</td>
+        <td>12</td>
+      </tr>
+      <tr>
+        <td>801</td>
+        <td>25</td>
+      </tr>
+      <tr>
+        <td>222</td>
+        <td>17</td>
+      </tr>
+      <tr>
+        <td rowspan="2">cse-310</td>
+        <td>222</td>
+        <td>18</td>
+      </tr>
+      <tr>
+        <td>221</td>
+        <td>36</td>
+      </tr>
+      <tr>
+        <td>cse-412</td>
+        <td>223</td>
+        <td>50</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
+<!-- [
+  {
+    course: "cse-210",
+    room: ["322", "801", "222"],
+    student: [12, 25, 17],
+  },
+  {
+    course: "cse-310",
+    room: ["222", "221"],
+    student: [18, 36],
+  },
+  {
+    course: "cse-412",
+    room: ["223"],
+    student: ["50"],
+  },
+]; -->
