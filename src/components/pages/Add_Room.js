@@ -48,7 +48,7 @@ const AddRoom = () => {
     const submitHandle = e => {
         e.preventDefault();
 
-        fetch('http://localhost:5000/room', {
+        fetch('https://exam-control.onrender.com/room', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' 

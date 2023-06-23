@@ -13,7 +13,7 @@ const Routine = () => {
 
   // for courses
   useEffect(() => {
-    fetch("http://localhost:5000/courses")
+    fetch("https://exam-control.onrender.com/courses")
       .then((res) => res.json())
       .then((data) => {
         setExamInfo(data)
@@ -84,7 +84,7 @@ const Routine = () => {
       teacherInitial: teacherInitial,
     };
 
-    fetch("http://localhost:5000/routine", {
+    fetch("https://exam-control.onrender.com/routine", {
       method: "POST",
       headers: {
         "content-type": "application/json",
