@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+nav {
+    background-color: #334155;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nav-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.design {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    color: white;
+}
+
+#check {
+    display: none;
+}
+
+.checkbtn {
+    display: none;
+}
+
+.menus {
+    display: flex;
+    gap: 1rem;
+    transition: all ease-in 0.2s;
+}
+
+li a {
+    color: white;
+}
+
+@media (max-width: 1000px) {
+    .menus {
+        /* display: none; */
+        position: fixed;
+        top: 56px;
+        background-color: #334155;
+        flex-direction: column;
+        width: 100%;
+        left: -100%;
+        text-align: center;
+        padding: 3rem 0;
+        z-index: 100;
+    }
+
+    .menus li {
+        padding: 1rem 0;
+    }
+
+    .checkbtn {
+        display: block;
+    }
+
+    #check:checked ~ .menus {
+        left: 0;
+    }
+}
