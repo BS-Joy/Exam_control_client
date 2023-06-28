@@ -22,7 +22,7 @@ const Navbar = () => {
             {currentUser ? (
               <>
               <input type="checkbox" id="check" />
-              <label for="check" className="checkbtn">
+              <label htmlFor="check" className="checkbtn">
                   <IconContext.Provider value={{color: 'white', size:'1.5rem'}}>
                     <FaBars />
                   </IconContext.Provider>
@@ -37,7 +37,7 @@ const Navbar = () => {
                             <ul className="menus">
                                 <li className=''><Link to='/add_course'>Add Course</Link></li>
                                 <li className=''><Link to='/add_room'>Add Room</Link></li>
-                                <li className=''><Link to='/routine'>Add Routine</Link></li>
+                                <li className=''><Link to='/add_routine'>Add Routine</Link></li>
                                 <li className=''><Link to='/room_alloc'>Room Alloc</Link></li>
                                 <li className=''><Link className="flex items-center justify-center gap-1" to='/profile'>{currentUser.displayName.replace('-admin', '')}<BiUserCircle /></Link></li>
                                 <li className=''>
@@ -46,7 +46,7 @@ const Navbar = () => {
                             </ul>
                           ) : (
                             <ul className="menus">
-                                <li className=''><Link to='/input_schedule'>Exam Registration</Link></li>
+                                <li className=''><Link to='/exam_reg'>Exam Registration</Link></li>
                                 <li className=''>
                                   <Link className="flex items-center justify-center gap-1" to='/profile'>{currentUser && userType === 'teacher' ? currentUser.displayName.replace('-teacher', ''): ''}<BiUserCircle /></Link>
                                 </li>

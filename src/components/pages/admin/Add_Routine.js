@@ -1,15 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { TeacherContext } from '../../context/InitialContext';
 
-const Routine = () => {
+const AddRoutine = () => {
   const [teachersInitial, setTeachersInitial] = useState();
   const [slot, setSlot] = useState([]);
   const [examInfo, setExamInfo] = useState([]);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // for courses
   useEffect(() => {
@@ -84,7 +84,7 @@ const Routine = () => {
       teacherInitial: teacherInitial,
     };
 
-    fetch("http://localhost:5000/routine", {
+    fetch("http://localhost:5000/add_routine", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -224,4 +224,4 @@ const Routine = () => {
   );
 };
 
-export default Routine;
+export default AddRoutine;

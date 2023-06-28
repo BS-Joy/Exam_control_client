@@ -5,7 +5,7 @@ const Footer = () => {
     const currentDate = new Date().getFullYear();
     return (
         <div>
-            <footer className="fixed bottom-0 footer footer-center p-5 bg-slate-700 text-primary-content mt-8">
+            <footer className="bottom-0 footer footer-center p-5 bg-slate-700 text-primary-content mt-8">
                 <p>Copyright © {currentDate} - All right reserved</p>
             </footer>
         </div>
