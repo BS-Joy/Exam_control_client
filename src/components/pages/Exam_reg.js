@@ -48,7 +48,7 @@ const ExamReg = () => {
   // fetching level & term information
   // useEffect(() => {
   //   const fetchData = async () => {
-  //     const response = await fetch("http://localhost:5000/levelterm");
+  //     const response = await fetch("https://exam-control.onrender.com/levelterm");
   //     const data = await response.json();
   //     console.log(data)
   //     dispatch({type: 'Got_LevelTermInfo', result: data});
@@ -75,7 +75,7 @@ const ExamReg = () => {
     const lvt = e.target.value;
     const course_codes = [];
     try {
-      await fetch(`http://localhost:5000/get_courses/${lvt}`)
+      await fetch(`https://exam-control.onrender.com/get_courses/${lvt}`)
         .then((res) => res.json())
         .then((data) =>
           data.map((course) => course_codes.push(course.course_code))
@@ -130,7 +130,7 @@ const ExamReg = () => {
 
     // console.log(exam);
 
-    fetch("http://localhost:5000", {
+    fetch("https://exam-control.onrender.com", {
       method: "POST",
       headers: {
         "content-type": "application/json",

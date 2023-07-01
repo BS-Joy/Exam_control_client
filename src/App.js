@@ -36,7 +36,7 @@ function App() {
         {
           path: "/home",
           element: <PrivateRoute><ExamInfo /></PrivateRoute>,
-          loader: () => fetch("http://localhost:5000"),
+          loader: () => fetch("https://exam-control.onrender.com"),
         },
         {
           path: "/",
@@ -74,7 +74,7 @@ function App() {
         {
           path: "/room_alloc",
           element: <AdminRoute><RoomAlloc /></AdminRoute>,
-          loader: () => fetch("http://localhost:5000/rooms"),
+          loader: () => fetch("https://exam-control.onrender.com/rooms"),
         },
         {
           path: "/add_course",
