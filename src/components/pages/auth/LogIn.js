@@ -14,7 +14,7 @@ const Login = () => {
     const password = event.target.password.value;
 
     logIn(email, password)
-    .then(res => {
+    .then(() => {
       // console.log(res.usr);
       redirect('/home')
     }).catch(err => {
