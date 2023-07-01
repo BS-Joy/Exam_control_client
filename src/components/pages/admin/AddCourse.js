@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const AddCourse = () => {
   const [course, setCourse] = useState({});
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const levelTerms = ['L1 T1', 'L1 T2', 'L2 T1', 'L2 T2', 'L3 T1', 'L3 T2', 'L4 T1', 'L4 T2', ]
 
