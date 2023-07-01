@@ -17,6 +17,8 @@ import RoomAllocationTable from "./components/pages/Room_Allocation_Table";
 import Login from "./components/pages/auth/LogIn"
 import SignUp from "./components/pages/auth/SignUp";
 import AdminSignUp from "./components/pages/auth/Admin_SignUp";
+import ForgotPass from "./components/pages/auth/ForgotPass";
+import UpdatePassword from "./components/pages/auth/UpdatePassword";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import PublicRoute from "./components/routes/PublicRoute";
 import AdminRoute from "./components/routes/AdminRoute";
@@ -47,6 +49,11 @@ function App() {
         {
           path: "/admin_signup",
           element: <PublicRoute><AdminSignUp /></PublicRoute>,
+        },
+
+        {
+          path: "/password_reset",
+          element: <PublicRoute><ForgotPass /></PublicRoute>,
         },
 
         // teacher routes
@@ -100,6 +107,10 @@ function App() {
         {
           path: "/profile",
           element: <PrivateRoute><Profile /></PrivateRoute>
+        },
+        {
+          path: "/change_Pass",
+          element: <PrivateRoute><UpdatePassword /></PrivateRoute>
         }
       ],
     },
