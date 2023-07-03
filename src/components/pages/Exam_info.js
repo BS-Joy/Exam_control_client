@@ -4,7 +4,7 @@ const ExamInfo = () => {
   const [routines, setRoutines] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("https://exam-control.onrender.com");
+      const response = await fetch("https://exam-control-server.vercel.app");
       const data = await response.json();
       setRoutines(data);
     };

@@ -89,6 +89,7 @@ const AdminSignUp = () => {
               Email:
             </label>
             <input
+              onChange={checkDiuMail}
               type="email"
               name="email"
               id="email"
@@ -127,7 +128,7 @@ const AdminSignUp = () => {
             </Link>
           </div>
 
-          <button disabled={passValidation ? false : true} className="disabled:bg-red-600 disabled:cursor-not-allowed cursor-pointer py-2 px-4 block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold w-full text-center rounded">
+          <button disabled={passValidation && diuEmail ? false : true} className="disabled:bg-red-600 disabled:cursor-not-allowed cursor-pointer py-2 px-4 block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold w-full text-center rounded">
             Sign Up
           </button>
         </form>

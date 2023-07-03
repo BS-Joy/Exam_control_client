@@ -48,7 +48,7 @@ const AddRoom = () => {
     const submitHandle = e => {
         e.preventDefault();
 
-        fetch('https://exam-control.onrender.com/room', {
+        fetch('https://exam-control-server.vercel.app/room', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' 

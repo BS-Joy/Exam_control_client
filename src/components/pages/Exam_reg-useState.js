@@ -23,7 +23,7 @@ const ExamReg = () => {
   // fetching level & term information
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("https://exam-control.onrender.com/levelterm");
+      const response = await fetch("https://exam-control-server.vercel.app/levelterm");
       const data = await response.json();
       setLevelTermInfo(data)
     }
@@ -86,7 +86,7 @@ const ExamReg = () => {
       total: t_students,
     };
 
-    fetch("https://exam-control.onrender.com", {
+    fetch("https://exam-control-server.vercel.app", {
       method: "POST",
       headers: {
         "content-type": "application/json",

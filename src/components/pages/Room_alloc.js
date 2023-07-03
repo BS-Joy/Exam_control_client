@@ -129,7 +129,7 @@ const RoomAlloc = () => {
     console.log(state.examSlot);
 
     fetch(
-      `https://exam-control.onrender.com/exams/${state.query.date}/${state.query.exam_type}/${slot}`
+      `https://exam-control-server.vercel.app/exams/${state.query.date}/${state.query.exam_type}/${slot}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -145,7 +145,7 @@ const RoomAlloc = () => {
   const find_total = async (course) => {
     const student = await Promise.all(
       course.map((course) =>
-        fetch(`https://exam-control.onrender.com/students/${course}`).then((res) =>
+        fetch(`https://exam-control-server.vercel.app/students/${course}`).then((res) =>
           res.json()
         )
       )

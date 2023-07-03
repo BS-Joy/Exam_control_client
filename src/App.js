@@ -36,7 +36,7 @@ function App() {
         {
           path: "/home",
           element: <PrivateRoute><ExamInfo /></PrivateRoute>,
-          loader: () => fetch("https://exam-control.onrender.com"),
+          loader: () => fetch("https://exam-control-server.vercel.app"),
         },
         {
           path: "/",
@@ -74,7 +74,7 @@ function App() {
         {
           path: "/room_alloc",
           element: <AdminRoute><RoomAlloc /></AdminRoute>,
-          loader: () => fetch("https://exam-control.onrender.com/rooms"),
+          loader: () => fetch("https://exam-control-server.vercel.app/rooms"),
         },
         {
           path: "/add_course",

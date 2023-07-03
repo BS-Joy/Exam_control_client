@@ -22,7 +22,7 @@ const AddCourse = () => {
   const submitHandle = (e) => {
     e.preventDefault();
 
-    fetch("https://exam-control.onrender.com/add_courses", {
+    fetch("https://exam-control-server.vercel.app/add_courses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
