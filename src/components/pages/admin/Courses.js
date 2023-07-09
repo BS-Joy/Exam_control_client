@@ -11,7 +11,7 @@ const Courses = () => {
     const agree = window.confirm('Are you sure you want to delete this course');
     // console.log(course_id)
     if(agree) {
-        fetch(`http://localhost:5000/course_delete/${course_id}`, {
+        fetch(`https://exam-control-server.vercel.app/course_delete/${course_id}`, {
             method: 'DELETE'
         })
         .then(res => res.json())

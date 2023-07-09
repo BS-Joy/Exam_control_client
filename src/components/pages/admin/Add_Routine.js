@@ -13,7 +13,7 @@ const Routine = () => {
 
   // for courses
   useEffect(() => {
-    fetch("http://localhost:5000/courses")
+    fetch("https://exam-control-server.vercel.app/courses")
       .then((res) => res.json())
       .then((data) => {
         setExamInfo(data)
@@ -84,7 +84,7 @@ const Routine = () => {
       teacherInitial: teacherInitial,
     };
 
-    fetch("http://localhost:5000/routine", {
+    fetch("https://exam-control-server.vercel.app/routine", {
       method: "POST",
       headers: {
         "content-type": "application/json",
