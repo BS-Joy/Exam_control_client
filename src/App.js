@@ -83,22 +83,22 @@ function App() {
         {
           path: "/courses",
           element: <AdminRoute><Courses /></AdminRoute>,
-          loader: () => fetch("http://localhost:5000/all_courses")
+          loader: () => fetch("https://exam-control-server.vercel.app/all_courses")
         },
         {
           path: "/rooms",
           element: <AdminRoute><Rooms /></AdminRoute>,
-          loader: () => fetch("http://localhost:5000/")
+          loader: () => fetch("https://exam-control-server.vercel.app/")
         },
         {
           path: "/exams",
           element: <AdminRoute><Exams /></AdminRoute>,
-          loader: () => fetch("http://localhost:5000/")
+          loader: () => fetch("https://exam-control-server.vercel.app/")
         },
         {
           path: "/routines",
           element: <AdminRoute><Routines /></AdminRoute>,
-          loader: () => fetch("http://localhost:5000/")
+          loader: () => fetch("https://exam-control-server.vercel.app/")
         },
         {
           path: "/allocated_rooms",
